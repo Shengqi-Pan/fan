@@ -4,13 +4,11 @@
  * main.c
  */
 #include "pwm.h"          //TA PWM输出程序库头文件
-/*
-void ClkInit()                 //时钟1MHz
-{
-  DCOCTL|=CAL_DCO_1MHZ;
-  BCSCTL1|=CAL_BC1_1MHZ;
-}
-*/
+#include "keyboard.h"
+
+unsigned long int dutyTime = 200;
+extern unsigned char flag;
+extern unsigned char key;
 
 void main()
 {
@@ -24,5 +22,28 @@ void main()
     pwmSetDuty(1,200);        //1通道 有效200个时钟周期
     pwmSetPermill(2,200);     //2通道 20.0%
 
-    LPM0;
+    keyInit();
+    while(1)
+    {
+		switch (keyScan())
+		{
+		case 1:
+			//
+			break;
+		case 2:
+			//
+			break;
+		case 3:
+			dutyTime -= 100;
+			pwmSetPermill(2, dutyTime);
+			break;
+		case 4:
+			dutyTime += 100;
+			pwmSetPermill(2, dutyTime);
+			break;
+		default:
+			break;
+		}
+    }
+    //LPM0;
 }

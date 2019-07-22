@@ -30,7 +30,7 @@ void pwmSetDuty(char Channel,unsigned int Duty)
 * 范    例: pwmSetPermill(1,300)设置PWM通道1方波的占空比为30.0%
         pwmSetPermill(2,825)设置PWM通道2方波的占空比为82.5%
             */
-void pwmSetPermill(char Channel,unsigned int Percent)
+void pwmSetPermill(char Channel,unsigned long int Percent)
 {
     unsigned long int Period;
     unsigned int Duty;
