@@ -9,32 +9,11 @@
 
 unsigned char flag = 0;
 unsigned char key = 0;
-/************************
- * 毫秒延时
-************************/
-void delay_ms(unsigned int MS)
-{
-    unsigned char us,usn;
-    while(MS!=0)
-    {
-        usn = 2;
-        while(usn!=0)
-        {
-            us = 0xf5;
-            while (us!=0)
-            {
-                us--;
-            };
-            usn--;
-        }
-        MS--;
-    }
-}
 
 void keyInit()
 {
     P2SEL &= ~(BIT4 + BIT5 + BIT6 + BIT7);   //设为IO口
-	P2DIR &= ~(BIT4 + BIT5 + BIT6 + BIT7);  //设为输入
+	P2DIR &= ~(BIT4 + BIT5 + BIT6 + BIT7);   //设为输入
 }
 
 char keyScan()
@@ -68,8 +47,4 @@ char keyScan()
         return key;
     }
     return 0;
-}
-void ledScan()
-{
-
 }

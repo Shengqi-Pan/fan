@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v4.4.5                      
 ******************************************************************************
->> Linked Mon Jul 22 20:12:40 2019
+>> Linked Mon Jul 22 22:31:21 2019
 
 OUTPUT FILE NAME:   <fan.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00005c00
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00035c00  00000422  000357de  RWIX
+  FLASH2                00010000   00035c00  0000042e  000357d2  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -191,23 +191,23 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    00000422     
+.text      0    00010000    0000042e     
                   00010000    00000116     pwm.obj (.text:pwmInit)
                   00010116    000000b6     keyboard.obj (.text:keyScan)
-                  000101cc    00000082     main.obj (.text:main)
-                  0001024e    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  000102ba    00000068                            : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  00010322    00000058                            : div32u.obj (.text)
-                  0001037a    00000028     pwm.obj (.text:pwmSetPermill)
-                  000103a2    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
-                  000103c4    00000016     pwm.obj (.text:pwmSetDuty)
-                  000103da    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
-                  000103ee    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00010400    0000000e     keyboard.obj (.text:keyInit)
-                  0001040e    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  00010414    00000006     pwm.obj (.text:pwmSetPeriod)
-                  0001041a    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
-                  0001041e    00000004                            : exit.obj (.text:abort)
+                  000101cc    0000008e     main.obj (.text:main)
+                  0001025a    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  000102c6    00000068                            : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  0001032e    00000058                            : div32u.obj (.text)
+                  00010386    00000028     pwm.obj (.text:pwmSetPermill)
+                  000103ae    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  000103d0    00000016     pwm.obj (.text:pwmSetDuty)
+                  000103e6    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
+                  000103fa    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  0001040c    0000000e     keyboard.obj (.text:keyInit)
+                  0001041a    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00010420    00000006     pwm.obj (.text:pwmSetPeriod)
+                  00010426    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
+                  0001042a    00000004                            : exit.obj (.text:abort)
 
 
 LINKER GENERATED COPY TABLES
@@ -309,7 +309,7 @@ address   name
 00000732  ADC12MEM9               
 00000733  ADC12MEM9_H             
 00000732  ADC12MEM9_L             
-0001041e  C$$EXIT                 
+0001042a  C$$EXIT                 
 00000150  CRCDI                   
 00000152  CRCDIRB                 
 00000153  CRCDIRB_H               
@@ -917,8 +917,8 @@ address   name
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
 00005c1a  __TI_ISR_TRAP           
-000103ee  __TI_decompress_none    
-0001040e  __TI_decompress_rle24   
+000103fa  __TI_decompress_none    
+0001041a  __TI_decompress_rle24   
 0000ffd2  __TI_int41              
 0000ffd4  __TI_int42              
 0000ffd6  __TI_int43              
@@ -943,27 +943,27 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fffc  __TI_int62              
 ffffffff  __binit__               
 ffffffff  __c_args__              
-00010322  __mspabi_divul          
-000103a2  __mspabi_mpyl_f5hw      
-00010322  __mspabi_remul          
-0001024e  _auto_init_hold_wdt     
+0001032e  __mspabi_divul          
+000103ae  __mspabi_mpyl_f5hw      
+0001032e  __mspabi_remul          
+0001025a  _auto_init_hold_wdt     
 00005c00  _c_int00_noargs_noexit  
 0000fffe  _reset_vector           
 00005b60  _stack                  
-0001041a  _system_pre_init        
-0001041e  abort                   
+00010426  _system_pre_init        
+0001042a  abort                   
 ffffffff  binit                   
 00001c00  dutyTime                
 00001c04  flag                    
 00001c05  key                     
-00010400  keyInit                 
+0001040c  keyInit                 
 00010116  keyScan                 
 000101cc  main                    
-000103da  memcpy                  
+000103e6  memcpy                  
 00010000  pwmInit                 
-000103c4  pwmSetDuty              
-00010414  pwmSetPeriod            
-0001037a  pwmSetPermill           
+000103d0  pwmSetDuty              
+00010420  pwmSetPeriod            
+00010386  pwmSetPermill           
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1688,20 +1688,20 @@ address   name
 00010000  pwmInit                 
 00010116  keyScan                 
 000101cc  main                    
-0001024e  _auto_init_hold_wdt     
-00010322  __mspabi_divul          
-00010322  __mspabi_remul          
-0001037a  pwmSetPermill           
-000103a2  __mspabi_mpyl_f5hw      
-000103c4  pwmSetDuty              
-000103da  memcpy                  
-000103ee  __TI_decompress_none    
-00010400  keyInit                 
-0001040e  __TI_decompress_rle24   
-00010414  pwmSetPeriod            
-0001041a  _system_pre_init        
-0001041e  C$$EXIT                 
-0001041e  abort                   
+0001025a  _auto_init_hold_wdt     
+0001032e  __mspabi_divul          
+0001032e  __mspabi_remul          
+00010386  pwmSetPermill           
+000103ae  __mspabi_mpyl_f5hw      
+000103d0  pwmSetDuty              
+000103e6  memcpy                  
+000103fa  __TI_decompress_none    
+0001040c  keyInit                 
+0001041a  __TI_decompress_rle24   
+00010420  pwmSetPeriod            
+00010426  _system_pre_init        
+0001042a  C$$EXIT                 
+0001042a  abort                   
 ffffffff  __binit__               
 ffffffff  __c_args__              
 ffffffff  binit                   
