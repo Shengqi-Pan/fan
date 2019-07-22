@@ -6,17 +6,20 @@
  */
 #include"pwm.h"
 
+/*
+ * 设置周期
+ */
 void pwmSetPeriod(unsigned int Period)
 {
-    TA0CCR0 = Period;
+    TA1CCR0 = Period;
 }
 
 void pwmSetDuty(char Channel,unsigned int Duty)
 {
     switch(Channel)
     {
-        case 1: TA0CCR1=Duty; break;
-        case 2: TA0CCR2=Duty; break;
+        case 1: TA1CCR1=Duty; break;
+        case 2: TA1CCR2=Duty; break;
     }
 }
 /*
@@ -31,40 +34,40 @@ void pwmSetPermill(char Channel,unsigned int Percent)
 {
     unsigned long int Period;
     unsigned int Duty;
-    Period = TA0CCR0;
+    Period = TA1CCR0;
     Duty = Period * Percent / 1000;
     pwmSetDuty(Channel,Duty);
 }
 
 char pwmInit(char Clk,char Div,char Mode1,char Mode2)
 {
-    TA0CTL = 0;                  //清除以前设置
-    TA0CTL |= MC_1;              //定时器TA设为增计数模式
+    TA1CTL = 0;                  //清除以前设置
+    TA1CTL |= MC_1;              //定时器TA设为增计数模式
     switch(Clk)                 //选择时钟源
     {
-        case 'A': case 'a':  TA0CTL|=TASSEL_1; break;    //ACLK
-        case 'S': case 's':  TA0CTL|=TASSEL_2; break;    //SMCLK
-        case 'E':            TA0CTL|=TASSEL_0; break;    //外部输入(TA0CLK)
-        case 'e':            TA0CTL|=TASSEL_3; break;    //外部输入(TA0CLK取反)
+        case 'A': case 'a':  TA1CTL|=TASSEL_1; break;    //ACLK
+        case 'S': case 's':  TA1CTL|=TASSEL_2; break;    //SMCLK
+        case 'E':            TA1CTL|=TASSEL_0; break;    //外部输入(TA1CLK)
+        case 'e':            TA1CTL|=TASSEL_3; break;    //外部输入(TA1CLK取反)
         default :  return(0);                           //参数有误
     }
     switch(Div)                 //选择分频系数
     {
-        case 1:   TA0CTL|=ID_0; break;   //1
-        case 2:   TA0CTL|=ID_1; break;   //2
-        case 4:   TA0CTL|=ID_2; break;   //4
-        case 8:   TA0CTL|=ID_3; break;   //8
+        case 1:   TA1CTL|=ID_0; break;   //1
+        case 2:   TA1CTL|=ID_1; break;   //2
+        case 4:   TA1CTL|=ID_2; break;   //4
+        case 8:   TA1CTL|=ID_3; break;   //8
         default :  return(0);           //参数有误
     }
     switch(Mode1)               //设置PWM通道1的输出模式。
     {
         case 'P':case 'p':          //如果设置为高电平模式
-            TA0CCTL1 = OUTMOD_7;     //高电平PWM输出
+            TA1CCTL1 = OUTMOD_7;     //高电平PWM输出
             P1SEL |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
             P1DIR |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
             break;
         case 'N':case 'n':          //如果设置为低电平模式
-            TA0CCTL1 = OUTMOD_3;     //低电平PWM输出
+            TA1CCTL1 = OUTMOD_3;     //低电平PWM输出
             P1SEL |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
             P1DIR |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
             break;
@@ -76,12 +79,12 @@ char pwmInit(char Clk,char Div,char Mode1,char Mode2)
     switch(Mode2)                   //设置PWM通道1的输出模式。
     {
         case 'P':case 'p':          //如果设置为高电平模式
-            TA0CCTL2 =OUTMOD_7;      //高电平PWM输出
+            TA1CCTL2 =OUTMOD_7;      //高电平PWM输出
             P2SEL |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
             P2DIR |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
             break;
         case 'N':case 'n':          //如果设置为低电平模式
-            TA0CCTL2 =OUTMOD_3;      //低电平PWM输出
+            TA1CCTL2 =OUTMOD_3;      //低电平PWM输出
             P2SEL |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
             P2DIR |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
             break;
