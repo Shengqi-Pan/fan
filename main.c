@@ -26,6 +26,7 @@ void main()
     //pwmSetPermill(2,200);     //2Í¨µÀ 20.0%
 
     keyInit();
+    ledInit();
     while(1)
     {
 		switch (keyScan())
@@ -47,6 +48,7 @@ void main()
 		default:
 			break;
 		}
+		ledShow();
     }
 
     //LPM0;
