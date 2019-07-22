@@ -1,1 +1,1 @@
-"./adc.obj" "./main.obj" "./pwm.obj" "../lnk_msp430f5438a.cmd" -l"libmath.a" -l"libc.a" 
+"./adc.obj" "./keyboard.obj" "./led.obj" "./main.obj" "./pwm.obj" "../lnk_msp430f5438a.cmd" -l"libmath.a" -l"libc.a" 
