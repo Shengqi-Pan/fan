@@ -34,6 +34,7 @@ void pwmSetPermill(char Channel,unsigned long int Percent)
 {
     unsigned long int Period;
     unsigned int Duty;
+    Percent = 1000 - Percent;    
     Period = TA1CCR0;
     Duty = Period * Percent / 1000;
     pwmSetDuty(Channel,Duty);
