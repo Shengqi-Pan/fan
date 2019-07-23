@@ -22,8 +22,8 @@
  */
 
 
-unsigned int kp = 2500, ti = 5, td = 0;//pid[0]为Kp pid[1]为Ti pid[2]为Td
-unsigned int pid_A, pid_B, pid_C;
+int kp = 250, ti = 5, td = 0;
+int pid_A, pid_B, pid_C;
 
 void pid_init(void)
 {
@@ -34,7 +34,7 @@ void pid_init(void)
 
 }
 
-int PIDControl(unsigned int pressure_set, unsigned int pressure_current)
+int PIDControl(int pressure_set, int pressure_current)
 {
 
 	float delta_U = 0, Ua, Ub, Uc;
@@ -45,13 +45,13 @@ int PIDControl(unsigned int pressure_set, unsigned int pressure_current)
 	Ub= pid_B* e1;
 	Uc= pid_C* e2;
 	delta_U = Ua+ Ub+ Uc;			//增量u0=A*e0+B*e1+C*e2;
-	PWM_current = PWM_current + delta_U;
+	//PWM_current = PWM_current + delta_U;
 
 
 	e2 = e1;
 	e1 = e0;
 
-	return 0;
+	return delta_U;
 }
 
 
