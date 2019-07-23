@@ -10,7 +10,7 @@
  * main.c
  */
 //刷新频率
-const int REFRESHFREQ = 100;
+const int REFRESHFREQ = 30;
 //占空比(低电平占比，最大为1000)
 unsigned int dutyTime = 500;
 //设定的气压值
@@ -22,6 +22,7 @@ extern unsigned char key;
 //led需要显示的数字
 extern unsigned char number[8];
 
+int state = 0;
 /*
  * 根据对应的按键去执行相应操作
  * 由于需要用到pwmSetPermill接口
@@ -33,9 +34,11 @@ void keyEvent()
 	{
 	case 1:
 		pwmSetPermill(2,500);
+		state = 0;
 		break;
 	case 2:
 		pwmSetPermill(2,0);
+		state = 1;
 		break;
 	case 3:
 		standardPressure += 10;
@@ -56,7 +59,7 @@ void keyEvent()
  * 由于需要用到adc接口
  * 所以写在主程序中
  */
-void ledUpdate()
+void ledUpdateSet()
 {
 	unsigned int tmp, i;
 	//先更新设定气压值
@@ -66,6 +69,11 @@ void ledUpdate()
 		number[3 - i] = tmp % 10;
 		tmp = tmp / 10;
 	}
+}
+
+void ledUpdatePresent()
+{
+	unsigned int tmp, i;
 	//再更新实际气压值
 	tmp = ADS7950GetPressure();
 	for(i = 0; i <= 3; i++)
@@ -110,11 +118,13 @@ void main()
     	//根据按键执行相应操作
     	keyEvent();
     	//根据当前设定的气压值和ADC读入的气压值来刷新number数组中待显示的数据
-    	if(i == 0)ledUpdate();
+    	if(i == 0)ledUpdatePresent();
+    	ledUpdateSet();
     	//led动态扫描
 		ledShow();
 		//PID控制
-		pwmUpdate();
+		if (!state)
+			pwmUpdate();
 		//更新刷新频率控制变量i
 		i = ++i % REFRESHFREQ;
     }
