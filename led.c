@@ -73,7 +73,11 @@ void ledExtinguishAll()
 	P1OUT |= BIT6 + BIT7;   //输出1
 }
 
-void ledUpdate(unsigned char index)
+/*
+ * 将下一个待显示的数据
+ * 进行译码并送I/O口
+ */
+void ledRefresh(unsigned char index)
 {
 	static unsigned char decode[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
 	//对应进行译码
@@ -83,16 +87,13 @@ void ledUpdate(unsigned char index)
 void ledShow()
 {
 	static unsigned char index = 0;//用于取数组的下标
-	//static unsigned char indexBit = 0x01;
 
 	//先熄灭所有LED
 	ledExtinguishAll();
 	//更新数据
-	ledUpdate(index);
+	ledRefresh(index);
 	//点亮指定的LED
 	ledLight(index);
 	//下标顺次移位
 	index = (++index % 8);
-	//indexBit = indexBit<<1;
 }
-
