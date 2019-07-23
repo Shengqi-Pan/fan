@@ -61,12 +61,14 @@ void ledUpdate()
 	for(i = 0; i <= 3; i++)
 	{
 		number[3 - i] = tmp % 10;
+		tmp = tmp / 10;
 	}
 	//再更新实际气压值
 	tmp = ADS7950GetPressure();
 	for(i = 0; i <= 3; i++)
 	{
 		number[7 - i] = tmp % 10;
+		tmp = tmp / 10;
 	}
 }
 

@@ -20,6 +20,7 @@
 //              | |                 |
 //              --|RST              |
 //                |                 |
+//                |             P3.7|-> Data Out (UCB1SIMO)
 //                |                 |
 //                |             P5.4|<- Data In (UCB1SOMI)
 //                |                 |
@@ -83,13 +84,13 @@ unsigned int ADS7950GetPressure(void)
 
 	ADS7950_PORT_Init();
 
-	spi_result = ADS7950_ReadResultAndSetNextSample(MODE_MANUAL_CH3);	//ï¿½ï¿½ï¿½ï¿½ADCï¿½Ä·ï¿½ï¿½ï¿½Öµ
+	spi_result = ADS7950_ReadResultAndSetNextSample(MODE_MANUAL_CH3);	//¶Á³öADCµÄ·µ»ØÖµ
 	sample_result = spi_result & 0xFFF;
 	sample_channel = spi_result >> 12;
 
 	//voltage =  sample_result[times]*2500/4096    //--->2500/4096=0.610
-	voltage = sample_result * (unsigned long int)2500/4096;   //ï¿½ï¿½ï¿½ï¿½ADCï¿½Äµï¿½Ñ¹Öµï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½mV
-	pressure_display = voltage / 3;		//ï¿½ï¿½Ñ¹Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½Ö·Å´ï¿½ï¿½Â·ï¿½Äµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	voltage = sample_result * (unsigned long int)2500/4096;   //½øÈëADCµÄµçÑ¹Öµ£¬µ¥Î»ÊÇmV
+	pressure_display = voltage / 3;		//ÆøÑ¹ÖµÕû¶¨£¬Èç¹ûµ÷½Ú¹ý²î·Ö·Å´óµçÂ·µÄµçÎ»Æ÷£¬¸ÃÖµÐèÒªÖØÐÂÕû¶¨
 
 	__delay_cycles(1000);
 
@@ -98,7 +99,7 @@ unsigned int ADS7950GetPressure(void)
 }
 
 /*
- * ADS7950ï¿½Ë¿Ú³ï¿½Ê¼ï¿½ï¿½
+ * ADS7950¶Ë¿Ú³õÊ¼»¯
  */
 void ADS7950_PORT_Init()
 {
@@ -109,14 +110,14 @@ void ADS7950_PORT_Init()
 
 }
 /*
- * Ä£ï¿½ï¿½SPIï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å£ï¿½ï¿½ï¿½Ð´ADS7960
+ * Ä£ÄâSPI´®¿ÚÍ¨ÐÅ£¬¶ÁÐ´ADS7960
  *
  * SDO--The first bit clocks out at the falling edge of  CS;
  *    --next 15 bits clocks out at the falling edge of SCLK;
  * SDI--latch data on the rising edge of SCLK;
  *
- * input: ï¿½ï¿½ï¿½ï¿½ADS7950ï¿½ï¿½16Î»SDI
- * output: 16Î»ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½4Â·Í¨ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ö·ï¿½ï¿½12Î»AD×ªï¿½ï¿½ï¿½ï¿½ï¿½
+ * input: ËÍÖÁADS7950µÄ16Î»SDI
+ * output: 16Î»Êý¾Ý£¬°üº¬4Â·Í¨µÀÑ¡ÔñµØÖ·ºÍ12Î»AD×ª»»½á¹û
  * */
 
 unsigned int ADS7950_ReadResultAndSetNextSample(unsigned int uiSendData)
@@ -134,7 +135,7 @@ unsigned int ADS7950_ReadResultAndSetNextSample(unsigned int uiSendData)
 	  for(uiSendTimes = 16; uiSendTimes > 0; uiSendTimes--)
 	  {
 		  //prepare one bit to send
-		  //ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½
+		  //¸ßÎ»ÏÈÐÐÔ­Ôò
 		  if((uiSendData & 0x8000)== 0x8000)
 			  ADS7950_SDI_HIGH;
 	      else
