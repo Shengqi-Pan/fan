@@ -109,8 +109,9 @@ void main()
     	if(i == 0)ledUpdate();
     	//led动态扫描
 		ledShow();
+		//PID控制
 		pwmUpdate();
-		//这里加上PID控制
+		//更新刷新频率控制变量i
 		i = ++i % REFRESHFREQ;
     }
 
