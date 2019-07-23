@@ -4,16 +4,17 @@
 #include "keyboard.h"	  //按键扫描头文件
 #include "led.h"		  //led扫描头文件
 #include "adc.h"		  //adc读取头文件
+#include "pid.h"
 
 /*
  * main.c
  */
 //刷新频率
 const int REFRESHFREQ = 100;
-//占空比
-unsigned long int dutyTime = 200;
+//占空比(低电平占比，最大为1000)
+unsigned int dutyTime = 500;
 //设定的气压值
-unsigned int presentPressure = 0, standardPressure = 0;
+unsigned int presentPressure = 0, standardPressure = 250;
 //这个flag似乎目前没用
 extern unsigned char flag;
 //检测到的按键值
@@ -34,15 +35,15 @@ void keyEvent()
 		pwmSetPermill(2,500);
 		break;
 	case 2:
-		pwmSetPermill(2,1000);
+		pwmSetPermill(2,0);
 		break;
 	case 3:
-		dutyTime -= 10;
-		pwmSetPermill(2, dutyTime);
+		standardPressure += 10;
+		// pwmSetPermill(2, dutyTime);
 		break;
 	case 4:
-		dutyTime += 10;
-		pwmSetPermill(2, dutyTime);
+		standardPressure -= 10;
+		// pwmSetPermill(2, dutyTime);
 		break;
 	default:
 		break;
@@ -81,7 +82,9 @@ void ledUpdate()
  */
 void pwmUpdate()
 {
-
+	dutyTime = dutyTime + PIDControl(standardPressure, ADS7950GetPressure());
+	// 更新pwm占空比
+	pwmSetPermill(2, dutyTime);
 }
 
 
@@ -109,8 +112,9 @@ void main()
     	if(i == 0)ledUpdate();
     	//led动态扫描
 		ledShow();
+		//PID控制
 		pwmUpdate();
-		//这里加上PID控制
+		//更新刷新频率控制变量i
 		i = ++i % REFRESHFREQ;
     }
 
