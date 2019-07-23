@@ -22,28 +22,28 @@ char keyScan()
     {
         flag = 1;
         key = 1;
-        __delay_cycles(250000);
+        __delay_cycles(50000);//ясЁы1ms
         return key;
     }
     else if ((P2IN & BIT5) == 0)
     {
         flag = 1;
         key = 2;
-        __delay_cycles(250000);
+        __delay_cycles(50000);
         return key;
     }
     else if ((P2IN & BIT6) == 0)
     {
         flag = 1;
         key = 3;
-        __delay_cycles(250000);
+        __delay_cycles(50000);
         return key;
     }
     else if ((P2IN & BIT7) == 0)
     {
         flag = 1;
         key = 4;
-        __delay_cycles(250000);
+        __delay_cycles(50000);
         return key;
     }
     return 0;
