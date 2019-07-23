@@ -102,6 +102,7 @@ void main()
 
     keyInit();
     ledInit();
+    pid_init();
     int i = 0;//用于控制刷新频率
 
     while(1)

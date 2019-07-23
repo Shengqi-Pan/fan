@@ -22,7 +22,7 @@
  */
 
 
-int kp = 250, ti = 5, td = 0;
+int kp = 25, ti = 5, td = 0;
 int pid_A, pid_B, pid_C;
 
 void pid_init(void)
@@ -40,7 +40,7 @@ int PIDControl(int pressure_set, int pressure_current)
 	float delta_U = 0, Ua, Ub, Uc;
 	float static e0 = 0, e1 = 0, e2 = 0;
 
-	e0 = ((float)pressure_set - (float)pressure_current) / 100;		//设定量与读回量的误差量
+	e0 = (float)(pressure_set - pressure_current) / 100;		//设定量与读回量的误差量
 	Ua= pid_A* e0;
 	Ub= pid_B* e1;
 	Uc= pid_C* e2;
