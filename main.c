@@ -8,6 +8,8 @@
 /*
  * main.c
  */
+//刷新频率
+const int REFRESHFREQ = 100;
 //占空比
 unsigned long int dutyTime = 200;
 //设定的气压值
@@ -97,17 +99,19 @@ void main()
 
     keyInit();
     ledInit();
+    int i = 0;//用于控制刷新频率
 
     while(1)
     {
     	//根据按键执行相应操作
     	keyEvent();
     	//根据当前设定的气压值和ADC读入的气压值来刷新number数组中待显示的数据
-    	ledUpdate();
+    	if(i == 0)ledUpdate();
     	//led动态扫描
 		ledShow();
 		pwmUpdate();
 		//这里加上PID控制
+		i = ++i % REFRESHFREQ;
     }
 
     //LPM0;

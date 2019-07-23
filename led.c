@@ -87,13 +87,18 @@ void ledRefresh(unsigned char index)
 void ledShow()
 {
 	static unsigned char index = 0;//用于取数组的下标
-
-	//先熄灭所有LED
+	int i;
+	for(i = 0; i <8; i++)
+	{
+		//先熄灭所有LED
+		ledExtinguishAll();
+		//更新数据
+		ledRefresh(index);
+		//点亮指定的LED
+		ledLight(index);
+		//下标顺次移位
+		index = (++index % 8);
+		__delay_cycles(1000);//延迟0.02ms
+	}
 	ledExtinguishAll();
-	//更新数据
-	ledRefresh(index);
-	//点亮指定的LED
-	ledLight(index);
-	//下标顺次移位
-	index = (++index % 8);
 }
