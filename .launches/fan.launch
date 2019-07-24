@@ -26,7 +26,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.TI MSP430 USB3_0/MSP430" value="fan"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.UARTConnection_0/MSP430" value="fan"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:fan}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TI MSP430 USB1/MSP430" value="C:/Users\Rookie\workspace_v6_1\fan\Debug\fan.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TI MSP430 USB1/MSP430" value="C:/Users\admin\workspace_v6_1\fan\Debug\fan.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/fan"/>
 </listAttribute>
