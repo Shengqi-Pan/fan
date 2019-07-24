@@ -42,7 +42,6 @@ void pwmUpdate()
 	pwmSetPermill(2, dutyTime);
 }
 
-
 /*
  * 定时器中断初始化
  */
