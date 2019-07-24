@@ -1,105 +1,50 @@
 #include <msp430.h> 
 
-#include "pwm.h"          //TA PWMÊä³ö³ÌĞò¿âÍ·ÎÄ¼ş
-#include "keyboard.h"	  //°´¼üÉ¨ÃèÍ·ÎÄ¼ş
-#include "led.h"		  //ledÉ¨ÃèÍ·ÎÄ¼ş
-#include "adc.h"		  //adc¶ÁÈ¡Í·ÎÄ¼ş
+#include "pwm.h"          //TA PWMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½
+#include "keyboard.h"	  //ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½Í·ï¿½Ä¼ï¿½
+#include "led.h"		  //ledÉ¨ï¿½ï¿½Í·ï¿½Ä¼ï¿½
+#include "adc.h"		  //adcï¿½ï¿½È¡Í·ï¿½Ä¼ï¿½
 #include "pid.h"
 
 /*
  * main.c
  */
-//Ë¢ĞÂÆµÂÊ
+//Ë¢ï¿½ï¿½Æµï¿½ï¿½
 const int REFRESHFREQ = 30;
-//Õ¼¿Õ±È(µÍµçÆ½Õ¼±È£¬×î´óÎª1000)
-unsigned int dutyTime = 500;
-//Éè¶¨µÄÆøÑ¹Öµ
-unsigned int presentPressure = 0, standardPressure = 250;
-//Õâ¸öflagËÆºõÄ¿Ç°Ã»ÓÃ
-extern unsigned char flag;
-//¼ì²âµ½µÄ°´¼üÖµ
-extern unsigned char key;
-//ledĞèÒªÏÔÊ¾µÄÊı×Ö
-extern unsigned char number[8];
-//¶¨Ê±Æ÷ÖĞ¶ÏÊ±¼ä£¬¼´PIDËã·¨²ÉÑùÖÜÆÚ
 const int PIDPERIOD = 2000;
+//Õ¼ï¿½Õ±ï¿½(ï¿½Íµï¿½Æ½Õ¼ï¿½È£ï¿½ï¿½ï¿½ï¿½Îª1000)
+unsigned int dutyTime = 500;
+//ï¿½è¶¨ï¿½ï¿½ï¿½ï¿½Ñ¹Öµ
+unsigned int presentPressure = 0, standardPressure = 250;
 
-int state = 0;
+unsigned int state = 0;
+
 /*
- * ¸ù¾İ¶ÔÓ¦µÄ°´¼üÈ¥Ö´ĞĞÏàÓ¦²Ù×÷
- * ÓÉÓÚĞèÒªÓÃµ½pwmSetPermill½Ó¿Ú
- * ËùÒÔĞ´ÔÚÖ÷³ÌĞòÖĞ
+ * ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * ï¿½â²¿ï¿½Ğ¶Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
-void keyEvent()
+#pragma vector = PORT2_VECTOR                      //ï¿½Ë¿ï¿½2ï¿½ï¿½ï¿½Ğ¶ï¿½ï¿½ï¿½ï¿½ï¿½
+__interrupt void PORT2_ISR(void)
 {
-	switch (keyScan())
-	{
-	case 1:
-		pwmSetPermill(2,500);
-		state = 0;
-		break;
-	case 2:
-		pwmSetPermill(2,0);
-		state = 1;
-		break;
-	case 3:
-		standardPressure += 10;
-		// pwmSetPermill(2, dutyTime);
-		break;
-	case 4:
-		standardPressure -= 10;
-		// pwmSetPermill(2, dutyTime);
-		break;
-	default:
-		break;
-	}
+	P2IODect(&state, &standardPressure);       //ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//ï¿½ï¿½ï¿½ï¿½Ğ¶Ï±ï¿½Ö¾
 }
 
 /*
- * ¸ù¾İµ±Ç°Éè¶¨µÄÆøÑ¹ÖµºÍADC¶ÁÈëµÄÆøÑ¹Öµ
- * À´Ë¢ĞÂnumberÊı×éÖĞ´ıÏÔÊ¾µÄÊı¾İ
- * ÓÉÓÚĞèÒªÓÃµ½adc½Ó¿Ú
- * ËùÒÔĞ´ÔÚÖ÷³ÌĞòÖĞ
- */
-void ledUpdateSet()
-{
-	unsigned int tmp, i;
-	//ÏÈ¸üĞÂÉè¶¨ÆøÑ¹Öµ
-	tmp = standardPressure;
-	for(i = 0; i <= 3; i++)
-	{
-		number[3 - i] = tmp % 10;
-		tmp = tmp / 10;
-	}
-}
-
-void ledUpdatePresent()
-{
-	unsigned int tmp, i;
-	//ÔÙ¸üĞÂÊµ¼ÊÆøÑ¹Öµ
-	tmp = ADS7950GetPressure();
-	for(i = 0; i <= 3; i++)
-	{
-		number[7 - i] = tmp % 10;
-		tmp = tmp / 10;
-	}
-}
-
-/*
- * ¸üĞÂpwmÕ¼¿Õ±È
- * ÓÉÓÚĞèÒªÓÃµ½pidµÄ½Ó¿Ú
- * ËùÒÔĞ´ÔÚÖ÷³ÌĞòÖĞ
+ * ï¿½ï¿½ï¿½ï¿½pwmÕ¼ï¿½Õ±ï¿½
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ãµï¿½pidï¿½Ä½Ó¿ï¿½
+ * ï¿½ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 void pwmUpdate()
 {
 	dutyTime = dutyTime + PIDControl(standardPressure, ADS7950GetPressure());
-	// ¸üĞÂpwmÕ¼¿Õ±È
+	// ï¿½ï¿½ï¿½ï¿½pwmÕ¼ï¿½Õ±ï¿½
 	pwmSetPermill(2, dutyTime);
 }
 
 
 /*
- * ¶¨Ê±Æ÷ÖĞ¶Ï³õÊ¼»¯
+ * ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ğ¶Ï³ï¿½Ê¼ï¿½ï¿½
  */
 void TA0InterInit()
 {
@@ -112,34 +57,30 @@ void TA0InterInit()
 }
 
 void main()
-{
+	{
     // Stop watchdog timer to prevent time out reset
     WDTCTL = WDTPW + WDTHOLD;
     //ClkInit();
 
-    TA0InterInit();		//¶¨Ê±Æ÷TIMERA0ÖĞ¶Ï
-    pwmInit('A',1,'P','P');   //½«¶¨Ê±Æ÷TA³õÊ¼»¯³ÉÎªPWM·¢ÉúÆ÷; Ê±ÖÓÔ´=ACLK; ÎŞ·ÖÆµ; Í¨µÀ1ºÍÍ¨µÀ2¾ùÉèÎª¸ßµçÆ½Ä£Ê½¡£
-    pwmSetPeriod(50);        //Í¨µÀ1/2µÄPWM·½²¨ÖÜÆÚ¾ùÉèÎª50¸öÊ±ÖÓÖÜÆÚ
+    TA0InterInit();		//ï¿½ï¿½Ê±ï¿½ï¿½TIMERA0ï¿½Ğ¶ï¿½
+    pwmInit('A',1,'P','P');   //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½TAï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ÎªPWMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½; Ê±ï¿½ï¿½Ô´=ACLK; ï¿½Ş·ï¿½Æµ; Í¨ï¿½ï¿½1ï¿½ï¿½Í¨ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½Îªï¿½ßµï¿½Æ½Ä£Ê½ï¿½ï¿½
+    pwmSetPeriod(50);        //Í¨ï¿½ï¿½1/2ï¿½ï¿½PWMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½Îª50ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    //pwmSetDuty(1,200);        //1Í¨µÀ ÓĞĞ§200¸öÊ±ÖÓÖÜÆÚ
-    //pwmSetPermill(2,200);     //2Í¨µÀ 20.0%
-
-    keyInit();
+    IOInterruptInit();//ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶Ï³ï¿½Ê¼ï¿½ï¿½
     ledInit();
     pid_init();
-    int i = 0;//ÓÃÓÚ¿ØÖÆË¢ĞÂÆµÂÊ
+    _enable_interrupts(); //ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
+    int i = 0;//ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½Æµï¿½ï¿½
 
     while(1)
     {
-    	//¸ù¾İ°´¼üÖ´ĞĞÏàÓ¦²Ù×÷
-    	keyEvent();
-    	//¸ù¾İµ±Ç°Éè¶¨µÄÆøÑ¹ÖµºÍADC¶ÁÈëµÄÆøÑ¹ÖµÀ´Ë¢ĞÂnumberÊı×éÖĞ´ıÏÔÊ¾µÄÊı¾İ
-    	if(i == 0)ledUpdatePresent();
-    	ledUpdateSet();
-    	//led¶¯Ì¬É¨Ãè
+    	ledShow();
+    	//ï¿½ï¿½ï¿½İµï¿½Ç°ï¿½è¶¨ï¿½ï¿½ï¿½ï¿½Ñ¹Öµï¿½ï¿½ADCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹Öµï¿½ï¿½Ë¢ï¿½ï¿½numberï¿½ï¿½ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    	if(i == 0)ledUpdatePresent(ADS7950GetPressure());
+    	ledUpdateSet(standardPressure);
+    	//ledï¿½ï¿½Ì¬É¨ï¿½ï¿½
 		ledShow();
-
-		//¸üĞÂË¢ĞÂÆµÂÊ¿ØÖÆ±äÁ¿i
+		//ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½Æµï¿½Ê¿ï¿½ï¿½Æ±ï¿½ï¿½ï¿½i
 		i = ++i % REFRESHFREQ;
     }
 
@@ -149,7 +90,8 @@ void main()
 #pragma vector = TIMER0_A0_VECTOR
 __interrupt void TIMER_A0(void)
 {
-	//PID¿ØÖÆ
+	//PIDï¿½ï¿½ï¿½ï¿½
+	ledShow();
 	if (!state)
 		pwmUpdate();
 }

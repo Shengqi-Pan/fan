@@ -10,14 +10,12 @@
 
 #include <msp430.h>
 
-//初始化
 void ledInit();
-//点亮index下标的LED
 void ledLight(unsigned char index);
-//熄灭所有LED
 void ledExtinguishAll();
-//更新LED显示的数据为当前下标的数据
 void ledRefresh(unsigned char index);
 void ledShow();
+void ledUpdateSet(unsigned int standardPressure);
+void ledUpdatePresent(unsigned int presentPressure);
 
 #endif /* LED_H_ */
