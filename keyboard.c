@@ -9,15 +9,6 @@
 #include "pwm.h"
 
 
-void IOInterruptInit()
-{
-	P2DIR &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//设置为输入
-	P2REN |= BIT4 + BIT5 + BIT6 + BIT7;	//启用电阻
-	P2OUT |= BIT4 + BIT5 + BIT6 + BIT7;	//设置上拉电阻
-	P2IES |= BIT4 + BIT5 + BIT6 + BIT7;	//触发方式设为下降沿触发
-	P2IE |= BIT4 + BIT5 + BIT6 + BIT7;	//中断使能
-	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//清除中断标志
-}
 
 void P2IODect(unsigned int* pstate, unsigned int* pstandardPressure)
 {

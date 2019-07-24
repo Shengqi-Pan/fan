@@ -5,7 +5,7 @@
  *      Author: admin
  */
 #include <msp430.h>
-
+#include "pwm.h"
 /*
  * 输入：设定气压值、实际气压值
  *
@@ -22,7 +22,7 @@
  */
 
 
-int kp = 120, ti = 10, td = 2;
+int kp = 100, ti = 50, td = 10;
 int pid_A, pid_B, pid_C;
 
 void pid_init(void)
@@ -33,6 +33,8 @@ void pid_init(void)
 	pid_C= kp * td;             		//C=Kp*Td/Ts
 
 }
+
+
 
 int PIDControl(int pressure_set, int pressure_current)
 {
@@ -52,6 +54,19 @@ int PIDControl(int pressure_set, int pressure_current)
 	e1 = e0;
 
 	return delta_U;
+}
+
+/*
+ * 更新pwm占空比
+ *
+ */
+void pwmUpdate(int *pdutyTime, unsigned int standardPressure, unsigned int currentPressure)
+{
+	*pdutyTime = *pdutyTime + PIDControl(standardPressure, currentPressure);
+//	if (*pdutyTime > 900) *pdutyTime = 900;
+//	else if (*pdutyTime < 0) *pdutyTime = 0;
+	// 更新pwm占空比
+	pwmSetPermill(2, *pdutyTime);
 }
 
 

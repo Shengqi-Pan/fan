@@ -10,14 +10,15 @@
  * main.c
  */
 //刷新频率
-const int REFRESHFREQ = 30;
-const int PIDPERIOD = 2000;
+const int REFRESHFREQ = 150;
+const int PIDPERIOD = 100;
 //占空比(低电平占比，最大为1000)
-unsigned int dutyTime = 500;
+int dutyTime = 500;
 //设定的气压值
 unsigned int presentPressure = 0, standardPressure = 250;
 
 unsigned int state = 0;
+unsigned int j, a[1000];
 
 /*
  * 四个按键的
@@ -29,19 +30,6 @@ __interrupt void PORT2_ISR(void)
 	P2IODect(&state, &standardPressure);       //调用事件处理函数
 	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//清除中断标志
 }
-
-/*
- * 更新pwm占空比
- * 由于需要用到pid的接口
- * 所以写在主程序中
- */
-void pwmUpdate()
-{
-	dutyTime = dutyTime + PIDControl(standardPressure, ADS7950GetPressure());
-	// 更新pwm占空比
-	pwmSetPermill(2, dutyTime);
-}
-
 
 /*
  * 定时器中断初始化
@@ -56,12 +44,26 @@ void TA0InterInit()
 	_enable_interrupts();
 }
 
+/*
+ * 按键中断初始化
+ */
+void IOInterruptInit()
+{
+	P2DIR &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//设置为输入
+	P2REN |= BIT4 + BIT5 + BIT6 + BIT7;	//启用电阻
+	P2OUT |= BIT4 + BIT5 + BIT6 + BIT7;	//设置上拉电阻
+	P2IES |= BIT4 + BIT5 + BIT6 + BIT7;	//触发方式设为下降沿触发
+	P2IE |= BIT4 + BIT5 + BIT6 + BIT7;	//中断使能
+	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//清除中断标志
+}
+
+
 void main()
 	{
     // Stop watchdog timer to prevent time out reset
     WDTCTL = WDTPW + WDTHOLD;
-    //ClkInit();
 
+    initClock();
     TA0InterInit();		//定时器TIMERA0中断
     pwmInit('A',1,'P','P');   //将定时器TA初始化成为PWM发生器; 时钟源=ACLK; 无分频; 通道1和通道2均设为高电平模式。
     pwmSetPeriod(50);        //通道1/2的PWM方波周期均设为50个时钟周期
@@ -90,8 +92,18 @@ void main()
 #pragma vector = TIMER0_A0_VECTOR
 __interrupt void TIMER_A0(void)
 {
+	unsigned int pre;
 	//PID控制
 	ledShow();
 	if (!state)
-		pwmUpdate();
+	{
+		pre =  ADS7950GetPressure();
+		pwmUpdate(&dutyTime, standardPressure, pre);
+		if (j < 1000)
+		{
+			j++;
+			a[j] = pre;
+		}
+	}
+
 }

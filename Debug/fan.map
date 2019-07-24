@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v4.4.5                      
 ******************************************************************************
->> Linked Wed Jul 24 14:39:23 2019
+>> Linked Wed Jul 24 19:33:56 2019
 
 OUTPUT FILE NAME:   <fan.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00005c00
+ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00005c3a
 
 
 MEMORY CONFIGURATION
@@ -18,8 +18,8 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00004000  000000d3  00003f2d  RWIX
-  FLASH                 00005c00   0000a380  0000009c  0000a2e4  RWIX
+  RAM                   00001c00   00004000  000008a5  0000375b  RWIX
+  FLASH                 00005c00   0000a380  000000c2  0000a2be  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00035c00  00000b78  00035088  RWIX
+  FLASH2                00010000   00035c00  00000bba  00035046  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -92,44 +92,46 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.data      0    00001c00    0000002d     UNINITIALIZED
-                  00001c00    00000012     pid.obj (.data)
-                  00001c12    0000000a     led.obj (.data:decode$1)
-                  00001c1c    00000008     main.obj (.data)
-                  00001c24    00000008     led.obj (.data:number)
-                  00001c2c    00000001     led.obj (.data)
+.bss       0    00001c00    000007d8     UNINITIALIZED
+                  00001c00    000007d0     (.common:a)
+                  000023d0    00000002     (.common:j)
+                  000023d2    00000002     (.common:pid_A)
+                  000023d4    00000002     (.common:pid_B)
+                  000023d6    00000002     (.common:pid_C)
 
-.bss       0    00001c2e    00000006     UNINITIALIZED
-                  00001c2e    00000002     (.common:pid_A)
-                  00001c30    00000002     (.common:pid_B)
-                  00001c32    00000002     (.common:pid_C)
+.data      0    000023d8    0000002d     UNINITIALIZED
+                  000023d8    00000012     pid.obj (.data)
+                  000023ea    0000000a     led.obj (.data:decode$1)
+                  000023f4    00000008     main.obj (.data)
+                  000023fc    00000008     led.obj (.data:number)
+                  00002404    00000001     led.obj (.data)
 
 .stack     0    00005b60    000000a0     UNINITIALIZED
                   00005b60    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
                   00005b64    0000009c     --HOLE--
 
 .text:_isr 
-*          0    00005c00    0000004c     
-                  00005c00    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
-                  00005c1a    00000018     main.obj (.text:_isr:PORT2_ISR)
-                  00005c32    00000014     main.obj (.text:_isr:TIMER_A0)
-                  00005c46    00000006     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
+*          0    00005c00    00000072     
+                  00005c00    0000003a     main.obj (.text:_isr:TIMER_A0)
+                  00005c3a    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
+                  00005c54    00000018     main.obj (.text:_isr:PORT2_ISR)
+                  00005c6c    00000006     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
 
-.const     0    00005c4c    00000004     
-                  00005c4c    00000004     main.obj (.const)
+.const     0    00005c72    00000004     
+                  00005c72    00000004     main.obj (.const)
 
-.cinit     0    00005c50    0000004c     
-                  00005c50    00000029     (.cinit..data.load) [load image, compression = rle]
-                  00005c79    00000001     --HOLE-- [fill = 0]
-                  00005c7a    0000000c     (__TI_handler_table)
-                  00005c86    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00005c8c    00000010     (__TI_cinit_table)
+.cinit     0    00005c76    0000004c     
+                  00005c76    00000029     (.cinit..data.load) [load image, compression = rle]
+                  00005c9f    00000001     --HOLE-- [fill = 0]
+                  00005ca0    0000000c     (__TI_handler_table)
+                  00005cac    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00005cb2    00000010     (__TI_cinit_table)
 
 .init_array 
 *          0    00005c00    00000000     UNINITIALIZED
 
 .TI.persistent 
-*          0    00001c00    00000000     UNINITIALIZED
+*          0    000023d8    00000000     UNINITIALIZED
 
 RTC        0    0000ffd2    00000002     
                   0000ffd2    00000002     rts430x_lc_rd_eabi.lib : int41.obj (.int41)
@@ -206,7 +208,7 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    00000b78     
+.text      0    00010000    00000bba     
                   00010000    00000130     rts430x_lc_rd_eabi.lib : fs_add.obj (.text)
                   00010130    00000116     pwm.obj (.text:pwmInit)
                   00010246    000000b6     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
@@ -214,51 +216,52 @@ SYSNMI     0    0000fffc    00000002
                   00010392    00000096     pid.obj (.text:PIDControl)
                   00010428    00000090     adc.obj (.text:ADS7950GetPressure)
                   000104b8    0000008e     rts430x_lc_rd_eabi.lib : fs_div.obj (.text)
-                  00010546    0000006c     keyboard.obj (.text:P2IODect)
-                  000105b2    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  0001061e    0000006a     main.obj (.text:main)
-                  00010688    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  000106f0    00000068     led.obj (.text:ledLight)
-                  00010758    00000068     rts430x_lc_rd_eabi.lib : fs_toi.obj (.text)
-                  000107c0    00000058                            : div32u.obj (.text)
-                  00010818    0000004e     pid.obj (.text:pid_init)
-                  00010866    0000003e     rts430x_lc_rd_eabi.lib : lsr32.obj (.text:l_lsr_const)
-                  000108a4    0000003c     led.obj (.text:ledShow)
-                  000108e0    00000038     led.obj (.text:ledUpdatePresent)
-                  00010918    00000038     led.obj (.text:ledUpdateSet)
-                  00010950    00000036     pwm.obj (.text:pwmSetPermill)
-                  00010986    00000036     rts430x_lc_rd_eabi.lib : fs_itof.obj (.text)
-                  000109bc    00000032     led.obj (.text:ledInit)
-                  000109ee    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
-                  00010a1a    00000026     keyboard.obj (.text:IOInterruptInit)
-                  00010a40    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  00010a64    00000022                            : mult32_f5hw.obj (.text)
-                  00010a86    00000020     main.obj (.text:pwmUpdate)
-                  00010aa6    0000001c     main.obj (.text:TA0InterInit)
-                  00010ac2    00000018     adc.obj (.text:ADS7950_PORT_Init)
-                  00010ada    00000016     pwm.obj (.text:pwmSetDuty)
-                  00010af0    00000016     rts430x_lc_rd_eabi.lib : div16u.obj (.text)
-                  00010b06    00000016                            : mult16_f5hw.obj (.text)
-                  00010b1c    00000014     led.obj (.text:ledExtinguishAll)
-                  00010b30    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
-                  00010b44    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00010b56    0000000e     led.obj (.text:ledRefresh)
-                  00010b64    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  00010b6a    00000006     pwm.obj (.text:pwmSetPeriod)
-                  00010b70    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
-                  00010b74    00000004                            : exit.obj (.text:abort)
+                  00010546    0000006e     main.obj (.text:main)
+                  000105b4    0000006c     keyboard.obj (.text:P2IODect)
+                  00010620    0000006c     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  0001068c    00000068                            : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  000106f4    00000068     led.obj (.text:ledLight)
+                  0001075c    00000068     rts430x_lc_rd_eabi.lib : fs_toi.obj (.text)
+                  000107c4    00000058                            : div32u.obj (.text)
+                  0001081c    0000004e     pid.obj (.text:pid_init)
+                  0001086a    0000003e     rts430x_lc_rd_eabi.lib : lsr32.obj (.text:l_lsr_const)
+                  000108a8    0000003c     led.obj (.text:ledShow)
+                  000108e4    0000003a     clock.obj (.text:initClock)
+                  0001091e    00000038     led.obj (.text:ledUpdatePresent)
+                  00010956    00000038     led.obj (.text:ledUpdateSet)
+                  0001098e    00000036     pwm.obj (.text:pwmSetPermill)
+                  000109c4    00000036     rts430x_lc_rd_eabi.lib : fs_itof.obj (.text)
+                  000109fa    00000032     led.obj (.text:ledInit)
+                  00010a2c    0000002c     rts430x_lc_rd_eabi.lib : div16s.obj (.text)
+                  00010a58    00000026     main.obj (.text:IOInterruptInit)
+                  00010a7e    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  00010aa2    00000024     pid.obj (.text:pwmUpdate)
+                  00010ac6    00000022     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  00010ae8    0000001c     main.obj (.text:TA0InterInit)
+                  00010b04    00000018     adc.obj (.text:ADS7950_PORT_Init)
+                  00010b1c    00000016     pwm.obj (.text:pwmSetDuty)
+                  00010b32    00000016     rts430x_lc_rd_eabi.lib : div16u.obj (.text)
+                  00010b48    00000016                            : mult16_f5hw.obj (.text)
+                  00010b5e    00000014     led.obj (.text:ledExtinguishAll)
+                  00010b72    00000014     rts430x_lc_rd_eabi.lib : memcpy.obj (.text:memcpy)
+                  00010b86    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  00010b98    0000000e     led.obj (.text:ledRefresh)
+                  00010ba6    00000006     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00010bac    00000006     pwm.obj (.text:pwmSetPeriod)
+                  00010bb2    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
+                  00010bb6    00000004                            : exit.obj (.text:abort)
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00005c8c records: 2, size/record: 8, table size: 16
-	.data: load addr=00005c50, load size=00000029 bytes, run addr=00001c00, run size=0000002d bytes, compression=rle
-	.bss: load addr=00005c86, load size=00000006 bytes, run addr=00001c2e, run size=00000006 bytes, compression=zero_init
+__TI_cinit_table @ 00005cb2 records: 2, size/record: 8, table size: 16
+	.data: load addr=00005c76, load size=00000029 bytes, run addr=000023d8, run size=0000002d bytes, compression=rle
+	.bss: load addr=00005cac, load size=00000006 bytes, run addr=00001c00, run size=000007d8 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00005c7a records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00005ca0 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_rle24
 	index: 2, handler: __TI_decompress_none
@@ -351,9 +354,9 @@ address   name
 00000733  ADC12MEM9_H                       
 00000732  ADC12MEM9_L                       
 00010428  ADS7950GetPressure                
-00010ac2  ADS7950_PORT_Init                 
+00010b04  ADS7950_PORT_Init                 
 000102fc  ADS7950_ReadResultAndSetNextSample
-00010b74  C$$EXIT                           
+00010bb6  C$$EXIT                           
 00000150  CRCDI                             
 00000152  CRCDIRB                           
 00000153  CRCDIRB_H                         
@@ -423,7 +426,7 @@ address   name
 00000146  FCTL4                             
 00000147  FCTL4_H                           
 00000146  FCTL4_L                           
-00010a1a  IOInterruptInit                   
+00010a58  IOInterruptInit                   
 000004c4  MAC                               
 000004da  MAC32H                            
 000004db  MAC32H_H                          
@@ -473,7 +476,7 @@ address   name
 000004c9  OP2_H                             
 000004c8  OP2_L                             
 0000020e  P1IV                              
-00010546  P2IODect                          
+000105b4  P2IODect                          
 0000021e  P2IV                              
 00000204  PADIR                             
 00000205  PADIR_H                           
@@ -593,7 +596,7 @@ address   name
 000002ab  PFSEL_H                           
 000002aa  PFSEL_L                           
 00010392  PIDControl                        
-00005c4e  PIDPERIOD                         
+00005c74  PIDPERIOD                         
 00000324  PJDIR                             
 00000325  PJDIR_H                           
 00000324  PJDIR_L                           
@@ -624,14 +627,14 @@ address   name
 0000012e  PMMRIE                            
 0000012f  PMMRIE_H                          
 0000012e  PMMRIE_L                          
-00005c1a  PORT2_ISR                         
+00005c54  PORT2_ISR                         
 00000158  RCCTL0                            
 00000159  RCCTL0_H                          
 00000158  RCCTL0_L                          
 000001b0  REFCTL0                           
 000001b1  REFCTL0_H                         
 000001b0  REFCTL0_L                         
-00005c4c  REFRESHFREQ                       
+00005c72  REFRESHFREQ                       
 000004e4  RES0                              
 000004e5  RES0_H                            
 000004e4  RES0_L                            
@@ -751,7 +754,7 @@ address   name
 00000340  TA0CTL                            
 00000360  TA0EX0                            
 0000036e  TA0IV                             
-00010aa6  TA0InterInit                      
+00010ae8  TA0InterInit                      
 00000350  TA0R                              
 00000392  TA1CCR0                           
 00000394  TA1CCR1                           
@@ -781,7 +784,7 @@ address   name
 000003e0  TB0EX0                            
 000003ee  TB0IV                             
 000003d0  TB0R                              
-00005c32  TIMER_A0                          
+00005c00  TIMER_A0                          
 000005d0  UCA0ABCTL                         
 000005c6  UCA0BRW                           
 000005c7  UCA0BRW_H                         
@@ -962,15 +965,15 @@ address   name
 0000015c  WDTCTL_L                          
 00005c00  __STACK_END                       
 000000a0  __STACK_SIZE                      
-00005c8c  __TI_CINIT_Base                   
-00005c9c  __TI_CINIT_Limit                  
-00005c7a  __TI_Handler_Table_Base           
-00005c86  __TI_Handler_Table_Limit          
+00005cb2  __TI_CINIT_Base                   
+00005cc2  __TI_CINIT_Limit                  
+00005ca0  __TI_Handler_Table_Base           
+00005cac  __TI_Handler_Table_Limit          
 UNDEFED   __TI_INITARRAY_Base               
 UNDEFED   __TI_INITARRAY_Limit              
-00005c46  __TI_ISR_TRAP                     
-00010b44  __TI_decompress_none              
-00010b64  __TI_decompress_rle24             
+00005c6c  __TI_ISR_TRAP                     
+00010b86  __TI_decompress_none              
+00010ba6  __TI_decompress_rle24             
 0000ffd2  __TI_int41                        
 0000ffd4  __TI_int42                        
 0000ffd6  __TI_int43                        
@@ -993,71 +996,74 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fff8  __TI_int60                        
 0000fffa  __TI_int61                        
 0000fffc  __TI_int62                        
-00010a40  __TI_zero_init                    
+00010a7e  __TI_zero_init                    
 ffffffff  __binit__                         
 ffffffff  __c_args__                        
 00010006  __mspabi_addf                     
 000104b8  __mspabi_divf                     
-000109ee  __mspabi_divi                     
-00010af0  __mspabi_divu                     
-000107c0  __mspabi_divul                    
-00010758  __mspabi_fixfi                    
-00010986  __mspabi_fltif                    
+00010a2c  __mspabi_divi                     
+00010b32  __mspabi_divu                     
+000107c4  __mspabi_divul                    
+0001075c  __mspabi_fixfi                    
+000109c4  __mspabi_fltif                    
 00010246  __mspabi_mpyf                     
-00010b06  __mspabi_mpyi_f5hw                
-00010a64  __mspabi_mpyl_f5hw                
-000109ee  __mspabi_remi                     
-00010af0  __mspabi_remu                     
-000107c0  __mspabi_remul                    
-0001089e  __mspabi_srll_1                   
-0001087a  __mspabi_srll_10                  
-00010876  __mspabi_srll_11                  
-00010872  __mspabi_srll_12                  
-0001086e  __mspabi_srll_13                  
-0001086a  __mspabi_srll_14                  
-00010866  __mspabi_srll_15                  
-0001089a  __mspabi_srll_2                   
-00010896  __mspabi_srll_3                   
-00010892  __mspabi_srll_4                   
-0001088e  __mspabi_srll_5                   
-0001088a  __mspabi_srll_6                   
-00010886  __mspabi_srll_7                   
-00010882  __mspabi_srll_8                   
-0001087e  __mspabi_srll_9                   
+00010b48  __mspabi_mpyi_f5hw                
+00010ac6  __mspabi_mpyl_f5hw                
+00010a2c  __mspabi_remi                     
+00010b32  __mspabi_remu                     
+000107c4  __mspabi_remul                    
+000108a2  __mspabi_srll_1                   
+0001087e  __mspabi_srll_10                  
+0001087a  __mspabi_srll_11                  
+00010876  __mspabi_srll_12                  
+00010872  __mspabi_srll_13                  
+0001086e  __mspabi_srll_14                  
+0001086a  __mspabi_srll_15                  
+0001089e  __mspabi_srll_2                   
+0001089a  __mspabi_srll_3                   
+00010896  __mspabi_srll_4                   
+00010892  __mspabi_srll_5                   
+0001088e  __mspabi_srll_6                   
+0001088a  __mspabi_srll_7                   
+00010886  __mspabi_srll_8                   
+00010882  __mspabi_srll_9                   
 00010000  __mspabi_subf                     
-000105b2  _auto_init_hold_wdt               
-00005c00  _c_int00_noargs_noexit            
+00010620  _auto_init_hold_wdt               
+00005c3a  _c_int00_noargs_noexit            
 0000fffe  _reset_vector                     
 00005b60  _stack                            
-00010b70  _system_pre_init                  
-00010b74  abort                             
+00010bb2  _system_pre_init                  
+00001c00  a                                 
+00010bb6  abort                             
 ffffffff  binit                             
-00001c1c  dutyTime                          
-00001c00  kp                                
-00010b1c  ledExtinguishAll                  
-000109bc  ledInit                           
-000106f0  ledLight                          
-00010b56  ledRefresh                        
-000108a4  ledShow                           
-000108e0  ledUpdatePresent                  
-00010918  ledUpdateSet                      
-0001061e  main                              
-00010b30  memcpy                            
-00001c24  number                            
-00001c2e  pid_A                             
-00001c30  pid_B                             
-00001c32  pid_C                             
-00010818  pid_init                          
-00001c1e  presentPressure                   
+000023f4  dutyTime                          
+000108e4  initClock                         
+000023d0  j                                 
+000023d8  kp                                
+00010b5e  ledExtinguishAll                  
+000109fa  ledInit                           
+000106f4  ledLight                          
+00010b98  ledRefresh                        
+000108a8  ledShow                           
+0001091e  ledUpdatePresent                  
+00010956  ledUpdateSet                      
+00010546  main                              
+00010b72  memcpy                            
+000023fc  number                            
+000023d2  pid_A                             
+000023d4  pid_B                             
+000023d6  pid_C                             
+0001081c  pid_init                          
+000023f6  presentPressure                   
 00010130  pwmInit                           
-00010ada  pwmSetDuty                        
-00010b6a  pwmSetPeriod                      
-00010950  pwmSetPermill                     
-00010a86  pwmUpdate                         
-00001c20  standardPressure                  
-00001c22  state                             
-00001c04  td                                
-00001c02  ti                                
+00010b1c  pwmSetDuty                        
+00010bac  pwmSetPeriod                      
+0001098e  pwmSetPermill                     
+00010aa2  pwmUpdate                         
+000023f8  standardPressure                  
+000023fa  state                             
+000023dc  td                                
+000023da  ti                                
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1745,29 +1751,31 @@ address   name
 0000073e  ADC12MEM15                        
 0000073e  ADC12MEM15_L                      
 0000073f  ADC12MEM15_H                      
-00001c00  kp                                
-00001c02  ti                                
-00001c04  td                                
-00001c1c  dutyTime                          
-00001c1e  presentPressure                   
-00001c20  standardPressure                  
-00001c22  state                             
-00001c24  number                            
-00001c2e  pid_A                             
-00001c30  pid_B                             
-00001c32  pid_C                             
+00001c00  a                                 
+000023d0  j                                 
+000023d2  pid_A                             
+000023d4  pid_B                             
+000023d6  pid_C                             
+000023d8  kp                                
+000023da  ti                                
+000023dc  td                                
+000023f4  dutyTime                          
+000023f6  presentPressure                   
+000023f8  standardPressure                  
+000023fa  state                             
+000023fc  number                            
 00005b60  _stack                            
+00005c00  TIMER_A0                          
 00005c00  __STACK_END                       
-00005c00  _c_int00_noargs_noexit            
-00005c1a  PORT2_ISR                         
-00005c32  TIMER_A0                          
-00005c46  __TI_ISR_TRAP                     
-00005c4c  REFRESHFREQ                       
-00005c4e  PIDPERIOD                         
-00005c7a  __TI_Handler_Table_Base           
-00005c86  __TI_Handler_Table_Limit          
-00005c8c  __TI_CINIT_Base                   
-00005c9c  __TI_CINIT_Limit                  
+00005c3a  _c_int00_noargs_noexit            
+00005c54  PORT2_ISR                         
+00005c6c  __TI_ISR_TRAP                     
+00005c72  REFRESHFREQ                       
+00005c74  PIDPERIOD                         
+00005ca0  __TI_Handler_Table_Base           
+00005cac  __TI_Handler_Table_Limit          
+00005cb2  __TI_CINIT_Base                   
+00005cc2  __TI_CINIT_Limit                  
 0000ffd2  __TI_int41                        
 0000ffd4  __TI_int42                        
 0000ffd6  __TI_int43                        
@@ -1799,60 +1807,61 @@ address   name
 00010392  PIDControl                        
 00010428  ADS7950GetPressure                
 000104b8  __mspabi_divf                     
-00010546  P2IODect                          
-000105b2  _auto_init_hold_wdt               
-0001061e  main                              
-000106f0  ledLight                          
-00010758  __mspabi_fixfi                    
-000107c0  __mspabi_divul                    
-000107c0  __mspabi_remul                    
-00010818  pid_init                          
-00010866  __mspabi_srll_15                  
-0001086a  __mspabi_srll_14                  
-0001086e  __mspabi_srll_13                  
-00010872  __mspabi_srll_12                  
-00010876  __mspabi_srll_11                  
-0001087a  __mspabi_srll_10                  
-0001087e  __mspabi_srll_9                   
-00010882  __mspabi_srll_8                   
-00010886  __mspabi_srll_7                   
-0001088a  __mspabi_srll_6                   
-0001088e  __mspabi_srll_5                   
-00010892  __mspabi_srll_4                   
-00010896  __mspabi_srll_3                   
-0001089a  __mspabi_srll_2                   
-0001089e  __mspabi_srll_1                   
-000108a4  ledShow                           
-000108e0  ledUpdatePresent                  
-00010918  ledUpdateSet                      
-00010950  pwmSetPermill                     
-00010986  __mspabi_fltif                    
-000109bc  ledInit                           
-000109ee  __mspabi_divi                     
-000109ee  __mspabi_remi                     
-00010a1a  IOInterruptInit                   
-00010a40  __TI_zero_init                    
-00010a64  __mspabi_mpyl_f5hw                
-00010a86  pwmUpdate                         
-00010aa6  TA0InterInit                      
-00010ac2  ADS7950_PORT_Init                 
-00010ada  pwmSetDuty                        
-00010af0  __mspabi_divu                     
-00010af0  __mspabi_remu                     
-00010b06  __mspabi_mpyi_f5hw                
-00010b1c  ledExtinguishAll                  
-00010b30  memcpy                            
-00010b44  __TI_decompress_none              
-00010b56  ledRefresh                        
-00010b64  __TI_decompress_rle24             
-00010b6a  pwmSetPeriod                      
-00010b70  _system_pre_init                  
-00010b74  C$$EXIT                           
-00010b74  abort                             
+00010546  main                              
+000105b4  P2IODect                          
+00010620  _auto_init_hold_wdt               
+000106f4  ledLight                          
+0001075c  __mspabi_fixfi                    
+000107c4  __mspabi_divul                    
+000107c4  __mspabi_remul                    
+0001081c  pid_init                          
+0001086a  __mspabi_srll_15                  
+0001086e  __mspabi_srll_14                  
+00010872  __mspabi_srll_13                  
+00010876  __mspabi_srll_12                  
+0001087a  __mspabi_srll_11                  
+0001087e  __mspabi_srll_10                  
+00010882  __mspabi_srll_9                   
+00010886  __mspabi_srll_8                   
+0001088a  __mspabi_srll_7                   
+0001088e  __mspabi_srll_6                   
+00010892  __mspabi_srll_5                   
+00010896  __mspabi_srll_4                   
+0001089a  __mspabi_srll_3                   
+0001089e  __mspabi_srll_2                   
+000108a2  __mspabi_srll_1                   
+000108a8  ledShow                           
+000108e4  initClock                         
+0001091e  ledUpdatePresent                  
+00010956  ledUpdateSet                      
+0001098e  pwmSetPermill                     
+000109c4  __mspabi_fltif                    
+000109fa  ledInit                           
+00010a2c  __mspabi_divi                     
+00010a2c  __mspabi_remi                     
+00010a58  IOInterruptInit                   
+00010a7e  __TI_zero_init                    
+00010aa2  pwmUpdate                         
+00010ac6  __mspabi_mpyl_f5hw                
+00010ae8  TA0InterInit                      
+00010b04  ADS7950_PORT_Init                 
+00010b1c  pwmSetDuty                        
+00010b32  __mspabi_divu                     
+00010b32  __mspabi_remu                     
+00010b48  __mspabi_mpyi_f5hw                
+00010b5e  ledExtinguishAll                  
+00010b72  memcpy                            
+00010b86  __TI_decompress_none              
+00010b98  ledRefresh                        
+00010ba6  __TI_decompress_rle24             
+00010bac  pwmSetPeriod                      
+00010bb2  _system_pre_init                  
+00010bb6  C$$EXIT                           
+00010bb6  abort                             
 ffffffff  __binit__                         
 ffffffff  __c_args__                        
 ffffffff  binit                             
 UNDEFED   __TI_INITARRAY_Base               
 UNDEFED   __TI_INITARRAY_Limit              
 
-[790 symbols]
+[793 symbols]

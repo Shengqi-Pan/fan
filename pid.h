@@ -9,7 +9,9 @@
 #define PID_H_
 
 void pid_init(void);
+void pwmUpdate(int *pdutyTime, unsigned int standardPressure, unsigned int currentPressure);
 int PIDControl(int pressure_set, int pressure_current);
+
 
 
 
