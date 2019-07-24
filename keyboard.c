@@ -7,6 +7,9 @@
 
 #include "keyboard.h"
 #include "pwm.h"
+#include "pid.h"
+
+extern float e0, e1, e2;
 
 
 
@@ -22,11 +25,14 @@ void P2IODect(unsigned int* pstate, unsigned int* pstandardPressure)
 	switch (Push_Key)
 	{
 	case BIT4:
-		pwmSetPermill(2,500);
+		pwmSetPermill(2, 500);
 		*pstate = 0;
 		break;
 	case BIT5:
 		pwmSetPermill(2,0);
+		e0 = 0;
+		e1 = 0;
+		e2 = 0;
 		*pstate = 1;
 		break;
 	case 64:

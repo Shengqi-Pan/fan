@@ -11,14 +11,15 @@
  */
 //刷新频率
 const int REFRESHFREQ = 150;
-const int PIDPERIOD = 100;
+const int PIDPERIOD = 200;
 //占空比(低电平占比，最大为1000)
 int dutyTime = 500;
 //设定的气压值
 unsigned int presentPressure = 0, standardPressure = 250;
 
 unsigned int state = 0;
-unsigned int j, a[1000];
+unsigned int j, a[3000];
+
 
 /*
  * 四个按键的
@@ -78,7 +79,7 @@ void main()
     {
     	ledShow();
     	//根据当前设定的气压值和ADC读入的气压值来刷新number数组中待显示的数据
-    	if(i == 0)ledUpdatePresent(ADS7950GetPressure());
+    	if(i == 0)	ledUpdatePresent(ADS7950GetPressure());
     	ledUpdateSet(standardPressure);
     	//led动态扫描
 		ledShow();
@@ -99,7 +100,7 @@ __interrupt void TIMER_A0(void)
 	{
 		pre =  ADS7950GetPressure();
 		pwmUpdate(&dutyTime, standardPressure, pre);
-		if (j < 1000)
+		if (j < 3000)
 		{
 			j++;
 			a[j] = pre;
