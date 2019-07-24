@@ -22,7 +22,7 @@
  */
 
 
-int kp = 120, ti = 20, td = 2;
+int kp = 120, ti = 10, td = 2;
 int pid_A, pid_B, pid_C;
 
 void pid_init(void)

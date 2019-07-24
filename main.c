@@ -22,7 +22,7 @@ extern unsigned char key;
 //led需要显示的数字
 extern unsigned char number[8];
 //定时器中断时间，即PID算法采样周期
-const int PIDPERIOD = 10000;
+const int PIDPERIOD = 2000;
 
 int state = 0;
 /*
@@ -146,8 +146,8 @@ void main()
     //LPM0;
 }
 
-#pragma vector = TIMER0_A1_VECTOR
-__interrupt void TIMER_A1(void)
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt void TIMER_A0(void)
 {
 	//PID控制
 	if (!state)
