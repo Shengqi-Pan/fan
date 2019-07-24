@@ -21,6 +21,8 @@ extern unsigned char flag;
 extern unsigned char key;
 //led需要显示的数字
 extern unsigned char number[8];
+//定时器中断时间，即PID算法采样周期
+const int PIDPERIOD = 10000;
 
 int state = 0;
 /*
@@ -96,12 +98,26 @@ void pwmUpdate()
 }
 
 
+/*
+ * 定时器中断初始化
+ */
+void TA0InterInit()
+{
+	TA0CCR0 = PIDPERIOD;
+	TA0CCTL0 = CCIE;
+
+	TA0CTL |= TASSEL_1 + MC_1 + TACLR;
+
+	_enable_interrupts();
+}
+
 void main()
 {
     // Stop watchdog timer to prevent time out reset
     WDTCTL = WDTPW + WDTHOLD;
     //ClkInit();
 
+    TA0InterInit();		//定时器TIMERA0中断
     pwmInit('A',1,'P','P');   //将定时器TA初始化成为PWM发生器; 时钟源=ACLK; 无分频; 通道1和通道2均设为高电平模式。
     pwmSetPeriod(50);        //通道1/2的PWM方波周期均设为50个时钟周期
 
@@ -122,12 +138,18 @@ void main()
     	ledUpdateSet();
     	//led动态扫描
 		ledShow();
-		//PID控制
-		if (!state)
-			pwmUpdate();
+
 		//更新刷新频率控制变量i
 		i = ++i % REFRESHFREQ;
     }
 
     //LPM0;
+}
+
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TIMER_A1(void)
+{
+	//PID控制
+	if (!state)
+		pwmUpdate();
 }
