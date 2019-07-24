@@ -11,7 +11,7 @@
  */
 //刷新频率
 const int REFRESHFREQ = 30;
-const int PIDPERIOD = 500;
+const int PIDPERIOD = 2000;
 //占空比(低电平占比，最大为1000)
 unsigned int dutyTime = 500;
 //设定的气压值
@@ -57,7 +57,7 @@ void TA0InterInit()
 }
 
 void main()
-{
+	{
     // Stop watchdog timer to prevent time out reset
     WDTCTL = WDTPW + WDTHOLD;
     //ClkInit();
@@ -74,6 +74,7 @@ void main()
 
     while(1)
     {
+    	ledShow();
     	//根据当前设定的气压值和ADC读入的气压值来刷新number数组中待显示的数据
     	if(i == 0)ledUpdatePresent(ADS7950GetPressure());
     	ledUpdateSet(standardPressure);
@@ -86,10 +87,11 @@ void main()
     //LPM0;
 }
 
-#pragma vector = TIMER0_A1_VECTOR
-__interrupt void TIMER_A1(void)
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt void TIMER_A0(void)
 {
 	//PID控制
+	ledShow();
 	if (!state)
 		pwmUpdate();
 }
