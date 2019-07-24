@@ -12,10 +12,13 @@
  * 最后调用ledShow即可
  */
 
-#include"led.h"
+#include "led.h"
 
 unsigned char number[8] = {1, 2, 3, 4, 5, 6, 7, 8};
 
+/*
+ * 初始化
+ */
 void ledInit()
 {
 	//位选口初始化
@@ -33,6 +36,9 @@ void ledInit()
 	P8DIR |= 0xff;	//设为输出
 }
 
+/*
+ * 点亮index下标对应的LED
+ */
 void ledLight(unsigned char index)
 {
 	switch(index)
@@ -66,6 +72,9 @@ void ledLight(unsigned char index)
 	}
 }
 
+/*
+ * 熄灭所以LED
+ */
 void ledExtinguishAll()
 {
 	P3OUT |= BIT0 + BIT5 + BIT4;   //输出1
@@ -84,6 +93,9 @@ void ledRefresh(unsigned char index)
 	P8OUT = decode[number[index]];
 }
 
+/*
+ * 扫描一轮LED
+ */
 void ledShow()
 {
 	static unsigned char index = 0;//用于取数组的下标
@@ -101,4 +113,32 @@ void ledShow()
 		__delay_cycles(1000);//延迟0.02ms
 	}
 	ledExtinguishAll();
+}
+
+/*
+ * 根据当前设定的气压值和ADC读入的气压值
+ * 来刷新number数组中待显示的数据
+ */
+void ledUpdateSet(unsigned int standardPressure)
+{
+	unsigned int tmp, i;
+	//先更新设定气压值
+	tmp = standardPressure;
+	for(i = 0; i <= 3; i++)
+	{
+		number[3 - i] = tmp % 10;
+		tmp = tmp / 10;
+	}
+}
+
+void ledUpdatePresent(unsigned int presentPressure)
+{
+	unsigned int tmp, i;
+	//再更新实际气压值
+	tmp = presentPressure;
+	for(i = 0; i <= 3; i++)
+	{
+		number[7 - i] = tmp % 10;
+		tmp = tmp / 10;
+	}
 }
