@@ -11,6 +11,7 @@
  */
 //刷新频率
 const int REFRESHFREQ = 30;
+const int PIDPERIOD = 500;
 //占空比(低电平占比，最大为1000)
 unsigned int dutyTime = 500;
 //设定的气压值
