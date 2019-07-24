@@ -10,7 +10,7 @@
 
 #include <msp430.h>
 
-void IOInterruptInit();
+
 void P2IODect(unsigned int* pstate, unsigned int* pstandardPressure);
 
 #endif /* KEYBOARD_H_ */
