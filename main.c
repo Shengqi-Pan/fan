@@ -4,7 +4,8 @@
 #include "keyboard.h"	  //按键扫描头文件
 #include "led.h"		  //led扫描头文件
 #include "adc.h"		  //adc读取头文件
-#include "pid.h"
+#include "pid.h"		  //pid控制头文件
+#include "buzzer.h"		  //蜂鸣器头文件
 
 /*
  * main.c
@@ -31,6 +32,7 @@ __interrupt void PORT2_ISR(void)
 	if (standardPressure >= 450)  standardPressure = 450;
 	if (standardPressure <= 0)  standardPressure = 0;
 	P2IODect(&state, &standardPressure);       //调用事件处理函数
+	beep();
 	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//清除中断标志
 }
 
@@ -74,6 +76,7 @@ void main()
     IOInterruptInit();//按键中断初始化
     ledInit();
     pid_init();
+    buzzerInit();
     _enable_interrupts(); //开总中断
     int i = 0;//用于控制刷新频率
 

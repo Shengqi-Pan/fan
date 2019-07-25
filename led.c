@@ -110,7 +110,7 @@ void ledShow()
 		ledLight(index);
 		//下标顺次移位
 		index = (++index % 8);
-		__delay_cycles(1000);//延迟0.02ms
+		__delay_cycles(10000);//延迟0.2ms
 	}
 	ledExtinguishAll();
 }
