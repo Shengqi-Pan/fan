@@ -30,10 +30,13 @@ unsigned int j, a[3000];
 __interrupt void PORT2_ISR(void)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	P2IODect(&state, &standardPressure);       //ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (standardPressure > 60000)  standardPressure = 0;
 	if (standardPressure >= 450)  standardPressure = 450;
 =======
+=======
+>>>>>>> parent of 18ba6c4... Merge branch 'master' of https://github.com/Shengqi-Pan/BladelessFanController
 	P2IODect(&state, &standardPressure);       //µ÷ÓÃÊÂ¼þ´¦Àíº¯Êý
 >>>>>>> parent of 18ba6c4... Merge branch 'master' of https://github.com/Shengqi-Pan/BladelessFanController
 	beep();
