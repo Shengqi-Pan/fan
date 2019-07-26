@@ -20,7 +20,7 @@ int dutyTime = 500;
 unsigned int presentPressure = 0, standardPressure = 350;
 
 unsigned int state = 0;
-unsigned int j, a[3000];
+unsigned int j, a[1000];
 
 
 /*
@@ -30,6 +30,8 @@ unsigned int j, a[3000];
 #pragma vector = PORT2_VECTOR                      //端口2的中断向量
 __interrupt void PORT2_ISR(void)
 {
+	if (standardPressure >= 450)  standardPressure = 450;
+	if (standardPressure <= 0)  standardPressure = 0;
 	P2IODect(&state, &standardPressure);       //调用事件处理函数
 	beep();
 	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//清除中断标志
@@ -104,7 +106,7 @@ __interrupt void TIMER_A0(void)
 	{
 		pre =  ADS7950GetPressure();
 		pwmUpdate(&dutyTime, standardPressure, pre);
-		if (j < 3000)
+		if (j < 1000)
 		{
 			j++;
 			a[j] = pre;
