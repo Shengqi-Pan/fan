@@ -25,11 +25,13 @@ void P2IODect(unsigned int* pstate, unsigned int* pstandardPressure)
 	switch (Push_Key)
 	{
 	case BIT4:
+		pwmInit('A',1,'P','P');
 		pwmSetPermill(2, 500);
 		*pstate = 0;
 		break;
 	case BIT5:
-		pwmSetPermill(2,0);
+		pwmInit('A',1,'P','0');
+		//pwmSetPermill(2,0);
 		e0 = 0;
 		e1 = 0;
 		e2 = 0;

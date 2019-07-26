@@ -11,8 +11,8 @@
  * main.c
  */
 //刷新频率
-const int REFRESHFREQ = 150;
-const int PIDPERIOD = 100;
+const int REFRESHFREQ = 20;
+const int PIDPERIOD = 150;
 //占空比(低电平占比，最大为1000)
 int dutyTime = 500;
 //设定的气压值
@@ -29,9 +29,9 @@ unsigned int j, a[1000];
 #pragma vector = PORT2_VECTOR                      //端口2的中断向量
 __interrupt void PORT2_ISR(void)
 {
-	if (standardPressure >= 450)  standardPressure = 450;
-	if (standardPressure <= 0)  standardPressure = 0;
 	P2IODect(&state, &standardPressure);       //调用事件处理函数
+	if (standardPressure > 60000)  standardPressure = 0;
+	if (standardPressure >= 450)  standardPressure = 450;
 	beep();
 	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//清除中断标志
 }

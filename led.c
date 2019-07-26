@@ -136,6 +136,10 @@ void ledUpdatePresent(unsigned int presentPressure)
 	unsigned int tmp, i;
 	//再更新实际气压值
 	tmp = presentPressure;
+	if (tmp == 0)
+	{
+		tmp++;
+	}
 	for(i = 0; i <= 3; i++)
 	{
 		number[7 - i] = tmp % 10;

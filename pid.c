@@ -25,7 +25,7 @@
 //int kp = 80, ti = 20, td = 0;
 //int pid_A, pid_B, pid_C;
 
-float kp = 100, ki = 20, kd = 100;
+float kp = 300, ki = 50, kd = 100;
 float pid_A, pid_B, pid_C;
 float e0 = 0, e1 = 0, e2 = 0;
 

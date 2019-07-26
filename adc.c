@@ -73,9 +73,11 @@
 unsigned int ADS7950GetPressure(void)
 {
 	volatile unsigned int spi_result;
-	volatile unsigned int sample_result;
-	volatile unsigned int sample_channel;
+	volatile unsigned int sample_result[5];
+	volatile unsigned int sample_channel[5];
+	volatile unsigned int sum = 0, avg = 0, max = 0, min = 5000;
 	volatile unsigned long int voltage, pressure_display;
+	unsigned char times;
 	//unsigned int ModeControlRegister;
 
 	__delay_cycles(100);
@@ -84,15 +86,26 @@ unsigned int ADS7950GetPressure(void)
 
 	ADS7950_PORT_Init();
 
-	spi_result = ADS7950_ReadResultAndSetNextSample(MODE_MANUAL_CH3);	//读出ADC的返回值
-	sample_result = spi_result & 0xFFF;
-	sample_channel = spi_result >> 12;
+	for (times = 0; times < 3; times++)
+	{
+		spi_result = ADS7950_ReadResultAndSetNextSample(MODE_MANUAL_CH3);	//读出ADC的返回值
+		sample_result[times] = spi_result & 0xFFF;
+		//sample_channel[times] = spi_result >> 12;
+		sum += sample_result[times];
+		if (sample_result[times] >= max)	max = sample_result[times];
+		if (sample_result[times] <= min)	min = sample_result[times];
+	}
 
+	avg = sum - min - max;
+
+
+	//if(sample_channel != 0x0003)
 	//voltage =  sample_result[times]*2500/4096    //--->2500/4096=0.610
-	voltage = sample_result * (unsigned long int)2500/4096;   //进入ADC的电压值，单位是mV
+	voltage = avg * (unsigned long int)2500/4096;   //进入ADC的电压值，单位是mV
 	pressure_display = voltage / 3;		//气压值整定，如果调节过差分放大电路的电位器，该值需要重新整定
 
-	__delay_cycles(1000);
+
+	//__delay_cycles(1000);
 
     //_NOP(); //set breakpoint here, watch the variables
     return pressure_display;
@@ -158,6 +171,10 @@ unsigned int ADS7950_ReadResultAndSetNextSample(unsigned int uiSendData)
 
 	  ADS7950_CS_HIGH;
 	 // __delay_cycles(50);
+	  if ((result >> 12) != 0x0003)
+	  {
+		  _NOP();
+	  }
 
 	  return result;
 
