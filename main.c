@@ -11,12 +11,13 @@
  * main.c
  */
 //刷新频率
-const int REFRESHFREQ = 150;
+const int REFRESHFREQ = 30
+;
 const int PIDPERIOD = 200;
 //占空比(低电平占比，最大为1000)
 int dutyTime = 500;
 //设定的气压值
-unsigned int presentPressure = 0, standardPressure = 250;
+unsigned int presentPressure = 0, standardPressure = 350;
 
 unsigned int state = 0;
 unsigned int j, a[3000];
@@ -62,7 +63,7 @@ void IOInterruptInit()
 
 
 void main()
-	{
+{
     // Stop watchdog timer to prevent time out reset
     WDTCTL = WDTPW + WDTHOLD;
 

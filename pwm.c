@@ -60,39 +60,39 @@ char pwmInit(char Clk,char Div,char Mode1,char Mode2)
         case 8:   TA1CTL|=ID_3; break;   //8
         default :  return(0);           //参数有误
     }
-    switch(Mode1)               //设置PWM通道1的输出模式。
-    {
-        case 'P':case 'p':          //如果设置为高电平模式
-            TA1CCTL1 = OUTMOD_7;     //高电平PWM输出
-            P1SEL |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
-            P1DIR |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
-            break;
-        case 'N':case 'n':          //如果设置为低电平模式
-            TA1CCTL1 = OUTMOD_3;     //低电平PWM输出
-            P1SEL |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
-            P1DIR |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
-            break;
-        case '0':case 0:            //如果设置为禁用
-            P1SEL &= ~BIT2;         //P1.2恢复为普通IO口
-            break;
-        default :  return(0);       //参数有误
-    }
-    switch(Mode2)                   //设置PWM通道1的输出模式。
-    {
-        case 'P':case 'p':          //如果设置为高电平模式
-            TA1CCTL2 =OUTMOD_7;      //高电平PWM输出
-            P2SEL |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
-            P2DIR |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
-            break;
-        case 'N':case 'n':          //如果设置为低电平模式
-            TA1CCTL2 =OUTMOD_3;      //低电平PWM输出
-            P2SEL |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
-            P2DIR |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
-            break;
-        case '0':case 0:            //如果设置为禁用
-            P2SEL &= ~BIT3;         //P1.3恢复为普通IO口
-            break;
-        default :  return(0);       //参数有误
-    }
+//    switch(Mode1)               //设置PWM通道1的输出模式。
+//    {
+//        case 'P':case 'p':          //如果设置为高电平模式
+//            TA1CCTL1 = OUTMOD_7;     //高电平PWM输出
+//            P1SEL |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
+//            P1DIR |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
+//            break;
+//        case 'N':case 'n':          //如果设置为低电平模式
+//            TA1CCTL1 = OUTMOD_3;     //低电平PWM输出
+//            P1SEL |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
+//            P1DIR |= BIT2;          //从P1.2输出 (不同型号单片机可能不一样)
+//            break;
+//        case '0':case 0:            //如果设置为禁用
+//            P1SEL &= ~BIT2;         //P1.2恢复为普通IO口
+//            break;
+//        default :  return(0);       //参数有误
+//    }
+	switch(Mode2)                   //设置PWM通道1的输出模式。
+	{
+		case 'P':case 'p':          //如果设置为高电平模式
+			TA1CCTL2 =OUTMOD_7;      //高电平PWM输出
+			P2SEL |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
+			P2DIR |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
+			break;
+		case 'N':case 'n':          //如果设置为低电平模式
+			TA1CCTL2 =OUTMOD_3;      //低电平PWM输出
+			P2SEL |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
+			P2DIR |= BIT3;          //从P1.3输出 (不同型号单片机可能不一样)
+			break;
+		case '0':case 0:            //如果设置为禁用
+			P2SEL &= ~BIT3;         //P1.3恢复为普通IO口
+			break;
+		default :  return(0);       //参数有误
+	}
     return(1);
 }
