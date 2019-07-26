@@ -25,7 +25,7 @@
 //int kp = 80, ti = 20, td = 0;
 //int pid_A, pid_B, pid_C;
 
-float kp = 300, ki = 50, kd = 100;
+float kp = 300, ki = 100, kd = 300;
 float pid_A, pid_B, pid_C;
 float e0 = 0, e1 = 0, e2 = 0;
 
@@ -72,7 +72,7 @@ int PIDControl(int pressure_set, int pressure_current)
 void pwmUpdate(int *pdutyTime, unsigned int standardPressure, unsigned int currentPressure)
 {
 	*pdutyTime = *pdutyTime + PIDControl(standardPressure, currentPressure);
-	if (*pdutyTime > 1000) *pdutyTime = 1000;
+	if (*pdutyTime > 900) *pdutyTime = 900;
 	else if (*pdutyTime < 0) *pdutyTime = 0;
 	// 更新pwm占空比
 	pwmSetPermill(2, *pdutyTime);
