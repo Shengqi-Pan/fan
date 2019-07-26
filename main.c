@@ -19,7 +19,7 @@ int dutyTime = 500;
 unsigned int presentPressure = 0, standardPressure = 350;
 
 unsigned int state = 0;
-unsigned int j, a[1000];
+unsigned int j, a[3000];
 
 
 /*
@@ -29,9 +29,13 @@ unsigned int j, a[1000];
 #pragma vector = PORT2_VECTOR                      //ï¿½Ë¿ï¿½2ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½
 __interrupt void PORT2_ISR(void)
 {
+<<<<<<< HEAD
 	P2IODect(&state, &standardPressure);       //ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (standardPressure > 60000)  standardPressure = 0;
 	if (standardPressure >= 450)  standardPressure = 450;
+=======
+	P2IODect(&state, &standardPressure);       //µ÷ÓÃÊÂ¼þ´¦Àíº¯Êý
+>>>>>>> parent of 18ba6c4... Merge branch 'master' of https://github.com/Shengqi-Pan/BladelessFanController
 	beep();
 	P2IFG &= ~(BIT4 + BIT5 + BIT6 + BIT7);	//ï¿½ï¿½ï¿½ï¿½Ð¶Ï±ï¿½Ö¾
 }
@@ -105,7 +109,7 @@ __interrupt void TIMER_A0(void)
 	{
 		pre =  ADS7950GetPressure();
 		pwmUpdate(&dutyTime, standardPressure, pre);
-		if (j < 1000)
+		if (j < 3000)
 		{
 			j++;
 			a[j] = pre;
