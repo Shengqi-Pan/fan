@@ -3,7 +3,7 @@ a BladelessFanController based on MSP430 series MCU produced by TI
 
 本项目是基于TI的MSP430单片机开发的无叶风扇控制器
 
-浙江大学电气工程学院爱迪生班小学期”电子系统综合设计“课程项目
+浙江大学电气工程学院爱迪生班小学期“电子系统综合设计”课程项目
 
 
 
